@@ -21,6 +21,7 @@ public:
   static NAN_METHOD(SetFilter);
   static NAN_METHOD(Start);
   static NAN_METHOD(Stop);
+  static NAN_METHOD(Close);
   static NAN_METHOD(Write);
 
 private:
@@ -34,6 +35,7 @@ private:
   bool isDevUp();
   void setFilter(char* data, int length);
   void stop();
+  void close();
 
   void write_(char* data, int length);
 

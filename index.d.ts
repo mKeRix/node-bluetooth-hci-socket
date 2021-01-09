@@ -22,6 +22,7 @@ declare class BluetoothHciSocket extends NodeJS.EventEmitter {
 
     start(): void;
     stop(): void;
+    close(): void;
     reset(): void;
 
     bindRaw(devId: number): number;
