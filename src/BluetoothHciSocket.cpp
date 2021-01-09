@@ -124,7 +124,7 @@ NAN_MODULE_INIT(BluetoothHciSocket::Init) {
   Nan::SetPrototypeMethod(tmpl, "getDeviceList", GetDeviceList);
   Nan::SetPrototypeMethod(tmpl, "setFilter", SetFilter);
   Nan::SetPrototypeMethod(tmpl, "stop", Stop);
-  Nan::SetPrototypeMethod(tmpl, "close", Close);
+  Nan::SetPrototypeMethod(tmpl, "teardown", Teardown);
   Nan::SetPrototypeMethod(tmpl, "write", Write);
 
   Nan::Set(target, Nan::New("BluetoothHciSocket").ToLocalChecked(), Nan::GetFunction(tmpl).ToLocalChecked());
@@ -157,7 +157,7 @@ BluetoothHciSocket::BluetoothHciSocket() :
 
 BluetoothHciSocket::~BluetoothHciSocket() {
   if (this->_socket != -1) {
-    this->close();
+    this->teardown();
   }
 }
 
@@ -291,7 +291,7 @@ void BluetoothHciSocket::stop() {
   uv_poll_stop(&this->_pollHandle);
 }
 
-void BluetoothHciSocket::close() {
+void BluetoothHciSocket::teardown() {
   uv_close((uv_handle_t*)&this->_pollHandle, (uv_close_cb)BluetoothHciSocket::PollCloseCallback);
 
   close(this->_socket);
@@ -558,12 +558,12 @@ NAN_METHOD(BluetoothHciSocket::Stop) {
   info.GetReturnValue().SetUndefined();
 }
 
-NAN_METHOD(BluetoothHciSocket::Close) {
+NAN_METHOD(BluetoothHciSocket::Teardown) {
   Nan::HandleScope scope;
 
   BluetoothHciSocket* p = node::ObjectWrap::Unwrap<BluetoothHciSocket>(info.This());
 
-  p->close();
+  p->teardown();
 
   info.GetReturnValue().SetUndefined();
 }
