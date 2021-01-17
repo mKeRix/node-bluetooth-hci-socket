@@ -156,9 +156,6 @@ BluetoothHciSocket::BluetoothHciSocket() :
 }
 
 BluetoothHciSocket::~BluetoothHciSocket() {
-  if (this->_socket != -1) {
-    this->teardown();
-  }
 }
 
 void BluetoothHciSocket::start() {
@@ -295,8 +292,6 @@ void BluetoothHciSocket::teardown() {
   uv_close((uv_handle_t*)&this->_pollHandle, (uv_close_cb)BluetoothHciSocket::PollCloseCallback);
 
   close(this->_socket);
-
-  this->_socket = -1;
 }
 
 void BluetoothHciSocket::write_(char* data, int length) {
